@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lua Integration | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Lua Integration" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I’m writing an educational physics thing which is basically just a physics sandbox that can theoretically be used for labs and demonstrations in physics classes. I’ve tried to write it before with my own physics engine, but it didn’t turn out very well because I couldn’t get my collision solver right. Now I’m writing it with nphysics." />
+<meta property="og:description" content="I’m writing an educational physics thing which is basically just a physics sandbox that can theoretically be used for labs and demonstrations in physics classes. I’ve tried to write it before with my own physics engine, but it didn’t turn out very well because I couldn’t get my collision solver right. Now I’m writing it with nphysics." />
+<link rel="canonical" href="http://localhost:4000/2020/06/12/lua-integration.html" />
+<meta property="og:url" content="http://localhost:4000/2020/06/12/lua-integration.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-12T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"I’m writing an educational physics thing which is basically just a physics sandbox that can theoretically be used for labs and demonstrations in physics classes. I’ve tried to write it before with my own physics engine, but it didn’t turn out very well because I couldn’t get my collision solver right. Now I’m writing it with nphysics.","url":"http://localhost:4000/2020/06/12/lua-integration.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/06/12/lua-integration.html"},"headline":"Lua Integration","dateModified":"2020-06-12T00:00:00-04:00","datePublished":"2020-06-12T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Lua Integration</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-06-12T00:00:00-04:00" itemprop="datePublished">Jun 12, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I’m writing an <a href="https://github.com/mkhan45/physics-v2">educational physics thing</a> which is basically just a physics sandbox that can theoretically be used for labs and demonstrations in physics classes. I’ve tried to write it before with my own physics engine, but <a href="https://github.com/mkhan45/physics-engine">it didn’t turn out very well</a> because I couldn’t get my collision solver right. Now I’m writing it with <a href="https://nphysics.org/">nphysics</a>.</p>
+
+<p>I’ve also written <a href="https://github.com/mkhan45/gravity-sim-v2">a universal gravitation simulator</a> with the same idea, and since a universal gravitation sim on its own is pretty easy to write, 95% of the work went into getting the UI/UX right. I think the final product is pretty good, the biggest problem was the lack of preset scenarios and the difficulty in creating them. The presets were each meant to demonstrate one cool effect of gravity or just interesting scenarios in general, like a dual star system. I made them by hand in the simulator and then used the export button which exports all the planets to a .toml markup file. While it’s technically human readable and editable, it’s really not ideal considering how much extra info was serialized. If I’d written the serializer manually I probably could’ve gotten better results, but I really didn’t want to.</p>
+
+<p>For some scenarios such as the grid, I just edited the starting planets in the main method and recompiled and then exported it to toml, and it worked, but compiling Rust is pretty slow and it produced <a href="https://github.com/mkhan45/gravity-sim-v2/blob/master/saved_systems/grid.ron">a pretty uneditable result</a>. Every time I wanted to edit the grid I had to just rewrite the code, because for whatever reason I never decided to save it.</p>
+
+<hr />
+
+<p> </p>
+
+<p>For this new physics sandbox, I wanted something better. I’ve not really started any UI stuff yet, but I wanted an easier way to add and remove objects for testing. I’ve also been interested in using scripting languages like <a href="https://mun-lang.org/">Mun</a> for some parts of game development. This seemed like the perfect opportunity. I’d like to use Mun for it, but it seems like it’s not ready, and with what little experience with Lua I have, I like it.</p>
+
+<hr />
+
+<p> </p>
+
+<p>Using <a href="https://github.com/amethyst/rlua">rlua</a>, adding Lua integration to my project was super easy. Given my lack of experience with Lua I ran into some problems with the exact implementation details, but I figured it out pretty quickly.</p>
+
+<p>Right now you can only load objects from Lua on startup, and the Lua instance starts and ends in the <code class="language-plaintext highlighter-rouge">add_shapes_from_lua</code> function. I want to make it run alongside the whole program eventually.</p>
+
+<p>Here’s what <code class="language-plaintext highlighter-rouge">add_shapes_from_lua</code> does:</p>
+<ol>
+  <li>Initialize the Lua instance</li>
+  <li>Add some globals, including pi, the screen size, and, most importantly, the vector (table) <code class="language-plaintext highlighter-rouge">shapes</code>.</li>
+  <li>Run some Lua code which makes the Lua functions <code class="language-plaintext highlighter-rouge">add_shape</code> and <code class="language-plaintext highlighter-rouge">add_shapes</code>. Realistically these are kind of unnecessary but I wanted it to be as accessible as possible for people who have no coding experience, and with these two functions your Lua code can practically be a markup file.</li>
+  <li>Read and execute the user Lua code</li>
+  <li>Take the Lua table <code class="language-plaintext highlighter-rouge">shapes</code> into Rust and turn all of the internal Lua shapes into proper nphysics objects.</li>
+</ol>
+
+<hr />
+
+<p> </p>
+
+<p>Before, I had a default scenario with a floor, a static floating block, and some extra shapes. The Rust code for it was fairly verbose, and anytime I wanted to change things I had to recompile. Now, the starting shapes are made from this Lua:</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">add_shapes</span><span class="p">(</span>
+   <span class="c1">-- floor</span>
+   <span class="p">{</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">"rect"</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">SCREEN_Y</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="s2">"static"</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">SCREEN_X</span> <span class="o">*</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="n">elasticity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">},</span>
+
+   <span class="p">{</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">"rect"</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">16</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">"rect"</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">8</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="mi">8</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">PI</span> <span class="o">/</span> <span class="mi">3</span><span class="p">.</span><span class="mi">0</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">"circle"</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">19</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="mi">12</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">elasticity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">},</span>
+
+   <span class="c1">-- static floating square</span>
+   <span class="p">{</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">"rect"</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">SCREEN_X</span> <span class="o">/</span> <span class="mi">3</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">SCREEN_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="s2">"static"</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>It’s practically markup, and I think physics students and teachers should be able to figure it out pretty quickly.</p>
+
+<p>Of course, Lua also lets you do some fancier stuff. Here’s a grid:</p>
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">13</span> <span class="k">do</span>
+   <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span> <span class="k">do</span>
+      <span class="n">add_shape</span><span class="p">({</span>
+         <span class="n">shape</span> <span class="o">=</span> <span class="s2">"rect"</span><span class="p">,</span> 
+         <span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">((</span><span class="n">SCREEN_X</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">9</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span> 
+         <span class="n">y</span> <span class="o">=</span> <span class="n">j</span> <span class="o">*</span> <span class="p">((</span><span class="n">SCREEN_Y</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">9</span><span class="p">)</span> <span class="o">/</span> <span class="mi">20</span><span class="p">),</span> 
+         <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> 
+         <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> 
+         <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span>
+         <span class="n">elasticity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="p">,</span> 
+         <span class="n">friction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>
+      <span class="p">})</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Given how well this turned out, I’m trying to figure out a way I could use Lua for the GUI or other stuff that needs quick iteration.</p>
+
+<p>My biggest problem so far is that Lua is one indexed.</p>
+
+  </div><a class="u-url" href="/2020/06/12/lua-integration.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

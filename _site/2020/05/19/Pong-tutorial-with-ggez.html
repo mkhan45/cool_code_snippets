@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pong tutorial with ggez | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Pong tutorial with ggez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I saw a post on reddit asking for a simple game dev tutorial with Rust. Generally people encourage using ECS with any Rust game, so I guess there’s no tutorials for anything without it. However, for simple games like Pong or Flappy Bird, it really is easier to forgo the ECS." />
+<meta property="og:description" content="I saw a post on reddit asking for a simple game dev tutorial with Rust. Generally people encourage using ECS with any Rust game, so I guess there’s no tutorials for anything without it. However, for simple games like Pong or Flappy Bird, it really is easier to forgo the ECS." />
+<link rel="canonical" href="http://localhost:4000/2020/05/19/Pong-tutorial-with-ggez.html" />
+<meta property="og:url" content="http://localhost:4000/2020/05/19/Pong-tutorial-with-ggez.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-19T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"I saw a post on reddit asking for a simple game dev tutorial with Rust. Generally people encourage using ECS with any Rust game, so I guess there’s no tutorials for anything without it. However, for simple games like Pong or Flappy Bird, it really is easier to forgo the ECS.","url":"http://localhost:4000/2020/05/19/Pong-tutorial-with-ggez.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/05/19/Pong-tutorial-with-ggez.html"},"headline":"Pong tutorial with ggez","dateModified":"2020-05-19T00:00:00-04:00","datePublished":"2020-05-19T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Pong tutorial with ggez</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-19T00:00:00-04:00" itemprop="datePublished">May 19, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I saw a post on reddit asking for a simple game dev tutorial with Rust. Generally people encourage using ECS with any Rust game, so I guess there’s no tutorials for anything without it. However, for simple games like Pong or Flappy Bird, it really is easier to forgo the ECS.</p>
+
+<p>While Amethyst, the biggest Rust game engine, is completely built on ECS and you can’t make a game without it, there’s still plenty of small game engines that don’t make any assumptions. My favorite of these is ggez.</p>
+
+<p>With this tutorial I won’t try to explain very much syntax. You should probably read at least a few chapter of the book to understand everything.</p>
+
+<p>I’d recommend also opening the <a href="https://docs.rs/ggez/0.5.1/ggez/index.html">ggez documentation</a> while following this tutorial.</p>
+
+<hr />
+
+<h2 id="project-setup">Project setup</h2>
+
+<p>To get started, make a new folder and initialize a Rust project with <code class="language-plaintext highlighter-rouge">cargo init</code>. If you don’t have rust installed, install it with <a href="https://rustup.rs/">rustup</a>. If you’re on Linux rustup is probably already in your distro’s repositories.</p>
+
+<p>After running <code class="language-plaintext highlighter-rouge">cargo init</code>, you should have a folder structure like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    └── main.rs
+</code></pre></div></div>
+
+<p>Cargo.toml contains the manifest info for your Rust crate (crate is Rustacean for package). Mine looks like this:</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[package]</span>
+<span class="py">name</span> <span class="p">=</span> <span class="s">"pong_tutorial"</span>
+<span class="py">version</span> <span class="p">=</span> <span class="s">"0.1.0"</span>
+<span class="py">authors</span> <span class="p">=</span> <span class="p">[</span><span class="s">"Mikail Khan &lt;mikail.khan45@gmail.com&gt;"</span><span class="p">]</span>
+<span class="py">edition</span> <span class="p">=</span> <span class="s">"2018"</span>
+
+<span class="c"># See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html</span>
+
+<span class="nn">[dependencies]</span>
+
+</code></pre></div></div>
+
+<p>The src/ directory is where all of your Rust code goes. main.rs comes with Hello World already written:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Run <code class="language-plaintext highlighter-rouge">cargo build</code> to build your project, and <code class="language-plaintext highlighter-rouge">cargo run</code> to run it. If you just want to check for project for syntax and type errors, run <code class="language-plaintext highlighter-rouge">cargo check</code>. It’s a lot faster than <code class="language-plaintext highlighter-rouge">cargo build</code>.</p>
+
+<hr />
+
+<h2 id="ggez-basics">ggez basics</h2>
+
+<p>Adding ggez as a dependency is pretty simple. Just go to the <code class="language-plaintext highlighter-rouge">dependencies</code> section of your Cargo.toml and add <code class="language-plaintext highlighter-rouge">ggez = "0.5.1"</code></p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[package]</span>
+<span class="py">name</span> <span class="p">=</span> <span class="s">"pong_tutorial"</span>
+<span class="py">version</span> <span class="p">=</span> <span class="s">"0.1.0"</span>
+<span class="py">authors</span> <span class="p">=</span> <span class="p">[</span><span class="s">"Mikail Khan &lt;mikail.khan45@gmail.com&gt;"</span><span class="p">]</span>
+<span class="py">edition</span> <span class="p">=</span> <span class="s">"2018"</span>
+
+<span class="c"># See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html</span>
+
+<span class="nn">[dependencies]</span>
+<span class="py">ggez</span> <span class="p">=</span> <span class="s">"0.5.1"</span>
+</code></pre></div></div>
+
+<p>Run <code class="language-plaintext highlighter-rouge">cargo build</code> now to download and build ggez and all of its dependencies. It might take a few minutes.</p>
+
+<p>The behavior of the program hasn’t actually changed at all yet. <code class="language-plaintext highlighter-rouge">cargo run</code> will still just output “Hello, World!”.</p>
+
+<p>ggez works by creating a graphics context and an event loop and then using a user defined struct with specific methods implemented to run the game. ggez comes with a specific function to make the actual game run. It has this signature:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="n">run</span><span class="o">&lt;</span><span class="n">S</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Context</span><span class="p">,</span> 
+    <span class="n">events_loop</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">EventsLoop</span><span class="p">,</span> 
+    <span class="n">state</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">S</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">GameResult</span> <span class="k">where</span>
+    <span class="n">S</span><span class="p">:</span> <span class="n">EventHandler</span><span class="p">,</span>
+</code></pre></div></div>
+
+<p>What this tells us is that to get started we need:</p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />A ggez <code class="language-plaintext highlighter-rouge">Context</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />A ggez <code class="language-plaintext highlighter-rouge">EventsLoop</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />A struct that implements <code class="language-plaintext highlighter-rouge">EventHandler</code></li>
+</ul>
+
+<p>We can actually make a <code class="language-plaintext highlighter-rouge">Context</code> and <code class="language-plaintext highlighter-rouge">EventsLoop</code> with a single step, so let’s get that out of the way. Clear your main method and add this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+   <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Mikail Khan"</span><span class="p">)</span><span class="nf">.build</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>ggez nicely comes with a <code class="language-plaintext highlighter-rouge">ContextBuilder</code> to make a <code class="language-plaintext highlighter-rouge">Context</code> and <code class="language-plaintext highlighter-rouge">EventsLoop</code>. This is an example of the builder pattern in Rust.</p>
+
+<p><code class="language-plaintext highlighter-rouge">ggez::ContextBuilder::new("Pong", "Mikail Khan")</code> creates a <code class="language-plaintext highlighter-rouge">ContextBuilder</code> with title “Pong” and author “Mikail Khan”. Running <code class="language-plaintext highlighter-rouge">.build()</code> on it creates a <code class="language-plaintext highlighter-rouge">Context</code> and <code class="language-plaintext highlighter-rouge">EventsLoop</code>. The <code class="language-plaintext highlighter-rouge">&amp;mut</code> at the front makes sure that we get a mutable reference to the created values.</p>
+
+<p>Next, we need a struct that implements <code class="language-plaintext highlighter-rouge">ggez::event::EventHandler</code>. For convenience, add <code class="language-plaintext highlighter-rouge">use ggez::event::EventHandler</code> to the start of the file. Next, make a struct <code class="language-plaintext highlighter-rouge">MainState</code>. It doesn’t need to have anything for now.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">MainState</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we need to implement <code class="language-plaintext highlighter-rouge">EventHandler</code> for <code class="language-plaintext highlighter-rouge">MainState</code>. <code class="language-plaintext highlighter-rouge">EventHandler</code> is the trait that lets ggez know what to do with your struct to get the game going. It sets up the main loop and the draw loop for your game.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">EventHandler</span> <span class="k">for</span> <span class="n">MainState</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you run <code class="language-plaintext highlighter-rouge">cargo check</code> (or <code class="language-plaintext highlighter-rouge">cargo build</code>) now, you’ll get an error:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error[E0046]: not all trait items implemented, missing: `update`, `draw`
+  --&gt; src/main.rs:20:1
+   |
+20 | impl EventHandler for MainState {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `update`, `draw` in implementation
+   |
+   = help: implement the missing item: `fn update(&amp;mut self, _: &amp;mut ggez::context::Context) -&gt; std::result::Result&lt;(), ggez::error::GameError&gt; {
+ todo!() }`
+   = help: implement the missing item: `fn draw(&amp;mut self, _: &amp;mut ggez::context::Context) -&gt; std::result::Result&lt;(), ggez::error::GameError&gt; { t
+odo!() }`
+</code></pre></div></div>
+
+<p>This error tells us that we’re missing two functions and gives us their signatures. If we follow its advice, we get:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">EventHandler</span> <span class="k">for</span> <span class="n">MainState</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">update</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nd">todo!</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nd">todo!</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">todo!()</code> is a macro which just exits the program with an error.</p>
+
+<p>Now that we have the skeleton of a struct that implements <code class="language-plaintext highlighter-rouge">EventHandler</code>, we can complete our main method for now:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c">// create a mutable reference to a `Context` and `EventsLoop`</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Fish"</span><span class="p">)</span><span class="nf">.build</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+
+    <span class="c">// Make a mutable reference to `MainState`</span>
+    <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{};</span>
+
+    <span class="c">// Start the game</span>
+    <span class="nn">ggez</span><span class="p">::</span><span class="nn">event</span><span class="p">::</span><span class="nf">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">,</span> <span class="n">main_state</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The program is now runnable! It doesn’t do anything yet though. We get this error:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>thread 'main' panicked at 'not yet implemented', src/main.rs:22:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</code></pre></div></div>
+
+<p>That’s because ggez tried to run our <code class="language-plaintext highlighter-rouge">update()</code> method, which just has a <code class="language-plaintext highlighter-rouge">todo!()</code>.</p>
+
+<p>There’s also one warning:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>warning: unused `std::result::Result` that must be used
+  --&gt; src/main.rs:38:5
+   |
+38 |     ggez::event::run(ctx, event_loop, main_state);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_must_use)]` on by default
+   = note: this `Result` may be an `Err` variant, which should be handled
+</code></pre></div></div>
+
+<p>This error tels us that <code class="language-plaintext highlighter-rouge">ggez::event::run</code> returns a <code class="language-plaintext highlighter-rouge">Result</code>, which might be an error. If it’s an error, we should handle it. However, if this function fails, the program can’t really recover. Also, it’s going to be the last line in <code class="language-plaintext highlighter-rouge">main()</code>. To fix this, we can make <code class="language-plaintext highlighter-rouge">main()</code> return a <code class="language-plaintext highlighter-rouge">Result</code>. This is useful because if <code class="language-plaintext highlighter-rouge">main()</code> fails the error will just be printed when the program crashes. <code class="language-plaintext highlighter-rouge">ggez::event::run()</code> specifically returns a <code class="language-plaintext highlighter-rouge">ggez::GameResult</code>, so that’s what we should make <code class="language-plaintext highlighter-rouge">main()</code> return.</p>
+
+<p>Change the function signature to</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span>
+</code></pre></div></div>
+
+<p>If we try to compile this (or <code class="language-plaintext highlighter-rouge">cargo check</code> it), we’ll get another error:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error[E0308]: mismatched types
+  --&gt; src/main.rs:30:14
+   |
+30 | fn main() -&gt; ggez::GameResult {
+   |    ----      ^^^^^^^^^^^^^^^^ expected enum `std::result::Result`, found `()`
+   |    |
+   |    implicitly returns `()` as its body has no tail or `return` expression
+...
+38 |     ggez::event::run(ctx, event_loop, main_state);
+   |                                                  - help: consider removing this semicolon
+   |
+   = note:   expected enum `std::result::Result&lt;(), ggez::error::GameError&gt;`
+           found unit type `()`
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0308`.
+</code></pre></div></div>
+
+<p>The Rust compiler helpfully tells us exactly what to do. If we remove the last semicolon on our <code class="language-plaintext highlighter-rouge">ggez::event::run()</code> call, <code class="language-plaintext highlighter-rouge">main()</code> will return it. Now, <code class="language-plaintext highlighter-rouge">main()</code> looks like this:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+    <span class="c">// create a mutable reference to a `Context` and `EventsLoop`</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Fish"</span><span class="p">)</span><span class="nf">.build</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+
+    <span class="c">// Make a mutable reference to `MainState`</span>
+    <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{};</span>
+
+    <span class="c">// Start the game</span>
+    <span class="nn">ggez</span><span class="p">::</span><span class="nn">event</span><span class="p">::</span><span class="nf">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">,</span> <span class="n">main_state</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To stop the game from crashing immediately, we should replace the bodies of our <code class="language-plaintext highlighter-rouge">update()</code> and <code class="language-plaintext highlighter-rouge">draw()</code> functions with something other than <code class="language-plaintext highlighter-rouge">todo!()</code>. Since both of them also return a <code class="language-plaintext highlighter-rouge">Result</code>, we can make both of them just return <code class="language-plaintext highlighter-rouge">Ok(())</code>, which just means that there’s been no errors.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">EventHandler</span> <span class="k">for</span> <span class="n">MainState</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">update</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+
+    <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Running the program now will create a blank window and do nothing. That’s the start of the game!</p>
+
+<p>You can find the full code so far <a href="https://github.com/mkhan45/ggez-pong-tutorial/tree/master/part1">on Github here</a>.</p>
+
+<p>If you have any feedback, please email me at mikail.khan45@gmail.com</p>
+
+<p>I’ll write Part 2 soon and link it here.</p>
+
+<p>Part 2: <a href="https://mkhan45.github.io/2020/05/20/Pong-tutorial-with-ggez-Part-2.html">https://mkhan45.github.io/2020/05/20/Pong-tutorial-with-ggez-Part-2.html</a></p>
+
+  </div><a class="u-url" href="/2020/05/19/Pong-tutorial-with-ggez.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

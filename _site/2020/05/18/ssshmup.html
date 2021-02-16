@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Ssshmup | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Ssshmup" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A few weeks ago I wrote a super small shoot ‘em up. I started because some friends of mine were making a similar shoot ‘em up in Unity, and given that they actually have good artists, they had some nice assets. I didn’t want to work with them on it but I decided that I’d take the chance to make my own, much smaller take on it. I called it ssshmup." />
+<meta property="og:description" content="A few weeks ago I wrote a super small shoot ‘em up. I started because some friends of mine were making a similar shoot ‘em up in Unity, and given that they actually have good artists, they had some nice assets. I didn’t want to work with them on it but I decided that I’d take the chance to make my own, much smaller take on it. I called it ssshmup." />
+<link rel="canonical" href="http://localhost:4000/2020/05/18/ssshmup.html" />
+<meta property="og:url" content="http://localhost:4000/2020/05/18/ssshmup.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-18T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"A few weeks ago I wrote a super small shoot ‘em up. I started because some friends of mine were making a similar shoot ‘em up in Unity, and given that they actually have good artists, they had some nice assets. I didn’t want to work with them on it but I decided that I’d take the chance to make my own, much smaller take on it. I called it ssshmup.","url":"http://localhost:4000/2020/05/18/ssshmup.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/05/18/ssshmup.html"},"headline":"Ssshmup","dateModified":"2020-05-18T00:00:00-04:00","datePublished":"2020-05-18T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Ssshmup</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-18T00:00:00-04:00" itemprop="datePublished">May 18, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>A few weeks ago I wrote a super small shoot ‘em up. I started because some friends of mine were making a similar shoot ‘em up in Unity, and given that they actually have good artists, they had some nice assets. I didn’t want to work with them on it but I decided that I’d take the chance to make my own, much smaller take on it. I called it ssshmup.</p>
+
+<p>As usual, I wrote it in Rust with <code class="language-plaintext highlighter-rouge">ggez</code> for rendering, input, and the event loop. I also used <code class="language-plaintext highlighter-rouge">specs</code>, an entity-component-system (ECS) library.</p>
+
+<p>I generally start ECS programs by brainstorming the types of entities needed and the best way to separate them into components. For most games, the obvious starting components are Position and Velocity, and then the obvious starting System to go with them is for integration.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Clone,</span> <span class="nd">Copy,</span> <span class="nd">Debug,</span> <span class="nd">PartialEq,</span> <span class="nd">Component)]</span>
+<span class="nd">#[storage(VecStorage)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="nf">Position</span><span class="p">(</span><span class="k">pub</span> <span class="n">Point</span><span class="p">);</span>
+
+<span class="nd">#[derive(Clone,</span> <span class="nd">Copy,</span> <span class="nd">Debug,</span> <span class="nd">PartialEq,</span> <span class="nd">Component)]</span>
+<span class="nd">#[storage(VecStorage)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="nf">Velocity</span><span class="p">(</span><span class="k">pub</span> <span class="n">Vector</span><span class="p">);</span>
+
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">IntegrateSys</span><span class="p">;</span>
+<span class="k">impl</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="n">System</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">IntegrateSys</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">SystemData</span> <span class="o">=</span> <span class="p">(</span><span class="n">WriteStorage</span><span class="o">&lt;</span><span class="nv">'a</span><span class="p">,</span> <span class="n">Position</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">ReadStorage</span><span class="o">&lt;</span><span class="nv">'a</span><span class="p">,</span> <span class="n">Velocity</span><span class="o">&gt;</span><span class="p">);</span>
+
+    <span class="k">fn</span> <span class="nf">run</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="p">(</span><span class="k">mut</span> <span class="n">positions</span><span class="p">,</span> <span class="n">vels</span><span class="p">):</span> <span class="nn">Self</span><span class="p">::</span><span class="n">SystemData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">positions</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vels</span><span class="p">)</span><span class="nf">.par_join</span><span class="p">()</span><span class="nf">.for_each</span><span class="p">(|(</span><span class="n">pos</span><span class="p">,</span> <span class="n">vel</span><span class="p">)|</span> <span class="p">{</span>
+            <span class="n">pos</span><span class="err">.</span><span class="mi">0</span> <span class="o">+=</span> <span class="n">vel</span><span class="err">.</span><span class="mi">0</span><span class="p">;</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For ssshmup, the next entity type I needed to make was for the player. Here’s the data that a player needs to have:</p>
+<ul>
+  <li>position</li>
+  <li>velocity</li>
+  <li>HP</li>
+  <li>sprite</li>
+  <li>bullet type</li>
+  <li>reload timing info</li>
+  <li>deflector timing info</li>
+  <li>hitbox info</li>
+</ul>
+
+<p>Out of that, Position and Velocity are already separated into components, and HP and Sprite aren’t unique to player. On the other hand, bullet type, reload info, and deflector timing info are unique to the player. With that, I needed a few more components:</p>
+
+<ul>
+  <li>HP</li>
+  <li>Sprite</li>
+  <li>Player</li>
+  <li>Hitbox</li>
+</ul>
+
+<p>I also created a helper type, <code class="language-plaintext highlighter-rouge">PlayerTuple</code>:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">PlayerTuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">Position</span><span class="p">,</span> <span class="n">Velocity</span><span class="p">,</span> <span class="n">HP</span><span class="p">,</span> <span class="n">Sprite</span><span class="p">,</span> <span class="n">Player</span><span class="p">,</span> <span class="n">Hitbox</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>From an ECS perspective, enemies aren’t really that different from the player. Here’s an EnemyTuple</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">EnemyTuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">Position</span><span class="p">,</span> <span class="n">Velocity</span><span class="p">,</span> <span class="n">HP</span><span class="p">,</span> <span class="n">Sprite</span><span class="p">,</span> <span class="n">Enemy</span><span class="p">,</span> <span class="n">Hitbox</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>In the actual code, things are slightly different because of other complexities but this is pretty close.</p>
+
+<p>The next major type is bullet. Bullets are even simpler than enemies and players, but they still do have some unique data.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">BulletTuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">Position</span><span class="p">,</span> <span class="n">Velocity</span><span class="p">,</span> <span class="n">Sprite</span><span class="p">,</span> <span class="n">Bullet</span><span class="p">,</span> <span class="n">Hitbox</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With just a few components, we can model almost the entirety of the game. Here’s the final list of components I used:</p>
+<ul>
+  <li>Position</li>
+  <li>Velocity</li>
+  <li>Player</li>
+  <li>ColorRect (for drawing the starts in the background)</li>
+  <li>HP</li>
+  <li>Enemy</li>
+  <li>Bullet</li>
+  <li>Sprite</li>
+  <li>AnimatedSprite - (for explosions)</li>
+  <li>Hitbox</li>
+</ul>
+
+<p>To create interactions between all these components, I wrote some systems. They’re all mostly self-explanatory.</p>
+
+<ul>
+  <li>EnemyMoveSys - For making enemies move left and right or up and down</li>
+  <li>BulletTrackingSys - For making tracking bullets track the player</li>
+  <li>BounceBulletSys - For making bouncing bullets bounce</li>
+  <li>IntegrateSys - For integrating all velocities to positions</li>
+  <li>StarMoveSys - The particle system for stars</li>
+  <li>ReloadTimerSys - For player reloads</li>
+  <li>DeflectorSys - For player deflector</li>
+  <li>EnemyShootSys - For enemy shooting</li>
+  <li>AnimationSys - For <code class="language-plaintext highlighter-rouge">AnimatedSprite</code>s</li>
+  <li>BulletCollSys - For bullet collisions with anything</li>
+  <li>PlayerCollSys - For player collisions with enemies</li>
+  <li>HPKillSys - For deleting entities that have an <code class="language-plaintext highlighter-rouge">HP</code> of 0</li>
+  <li>IFrameSys - For immunity frames after player collisions, this was mostly needed to change opacity when something is immune</li>
+</ul>
+
+<p>You can find ssshmup at <a href="https://github.com/mkhan45/ssshmup">github.com/mkhan45/ssshmup</a></p>
+
+  </div><a class="u-url" href="/2020/05/18/ssshmup.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

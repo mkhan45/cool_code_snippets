@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pong tutorial with ggez part 2 | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Pong tutorial with ggez part 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is a continuation of Pong tutorial with ggez." />
+<meta property="og:description" content="This is a continuation of Pong tutorial with ggez." />
+<link rel="canonical" href="http://localhost:4000/2020/05/20/Pong-tutorial-with-ggez-Part-2.html" />
+<meta property="og:url" content="http://localhost:4000/2020/05/20/Pong-tutorial-with-ggez-Part-2.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-20T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"This is a continuation of Pong tutorial with ggez.","url":"http://localhost:4000/2020/05/20/Pong-tutorial-with-ggez-Part-2.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/05/20/Pong-tutorial-with-ggez-Part-2.html"},"headline":"Pong tutorial with ggez part 2","dateModified":"2020-05-20T00:00:00-04:00","datePublished":"2020-05-20T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Pong tutorial with ggez part 2</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-20T00:00:00-04:00" itemprop="datePublished">May 20, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This is a continuation of <a href="https://mkhan45.github.io/2020/05/19/Pong-tutorial-with-ggez.html">Pong tutorial with ggez</a>.</p>
+
+<p>At the end part 1, we had the skeleton of a ggez game:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">ggez</span><span class="p">::{</span>
+    <span class="nn">event</span><span class="p">::</span><span class="n">EventHandler</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">MainState</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">EventHandler</span> <span class="k">for</span> <span class="n">MainState</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">update</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+
+    <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+    <span class="c">// create a mutable reference to a `Context` and `EventsLoop`</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Fish"</span><span class="p">)</span><span class="nf">.build</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+
+    <span class="c">// Make a mutable reference to `MainState`</span>
+    <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{};</span>
+
+    <span class="c">// Start the game</span>
+    <span class="nn">ggez</span><span class="p">::</span><span class="nn">event</span><span class="p">::</span><span class="nf">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">,</span> <span class="n">main_state</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this part, we’ll set up our structs and the draw loop.</p>
+
+<hr />
+
+<h2 id="struct-setup">Struct setup</h2>
+
+<p>Pong essentially consists of just a few pieces. There’s two paddles and a ball. There’s also two score counters. We want to store all the data Pong needs in our <code class="language-plaintext highlighter-rouge">MainState</code>. To make our <code class="language-plaintext highlighter-rouge">MainState</code> struct, we need to figure out what type each field should be.</p>
+
+<p>Paddles are pretty simple. They’re really just rectangles. They don’t even need to have a stored velocity because they only move when there’s input. A <code class="language-plaintext highlighter-rouge">Paddle</code> struct could look like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Paddle</span> <span class="p">{</span>
+   <span class="c">// in ggez, positions are stored as floats</span>
+   <span class="n">x</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span> <span class="c">// top left x coordinate</span>
+   <span class="n">y</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span> <span class="c">// top left y coordinate </span>
+   <span class="n">width</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+   <span class="n">height</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>But luckily, we don’t have to make our own <code class="language-plaintext highlighter-rouge">Paddle</code> struct because <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/struct.Rect.html">ggez conveniently comes with a nice <code class="language-plaintext highlighter-rouge">Rect</code> struct</a>.</p>
+
+<p>ggez’s <code class="language-plaintext highlighter-rouge">Rect</code> comes with some nice methods like <code class="language-plaintext highlighter-rouge">.overlaps()</code>.</p>
+
+<p>If we store each paddle in our game as a ggez <code class="language-plaintext highlighter-rouge">Rect</code>, our <code class="language-plaintext highlighter-rouge">MainState</code> so far looks like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MainState</span> <span class="p">{</span>
+   <span class="n">l_paddle</span><span class="p">:</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Rect</span><span class="p">,</span>
+   <span class="n">r_paddle</span><span class="p">:</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Rect</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It’s easier not to keep writing out <code class="language-plaintext highlighter-rouge">ggez::graphics::Rect</code>, so add a <code class="language-plaintext highlighter-rouge">use ggez::graphics::Rect</code> at the start of the file and then you can replace <code class="language-plaintext highlighter-rouge">ggez::graphics::Rect</code> with just <code class="language-plaintext highlighter-rouge">Rect</code>.</p>
+
+<p>The ball in Pong is also really just a Rect, but it also has velocity. Because of that, it’s best to make a new struct for it.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Ball</span> <span class="p">{</span>
+   <span class="n">rect</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">x_vel</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+   <span class="n">y_vel</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Instead of storing <code class="language-plaintext highlighter-rouge">x_vel</code> and <code class="language-plaintext highlighter-rouge">y_vel</code> separately as <code class="language-plaintext highlighter-rouge">f32</code>s, we could use ggez’s <code class="language-plaintext highlighter-rouge">Vector</code> type. ggez actually uses a specific math library which contains its <code class="language-plaintext highlighter-rouge">Vector</code> type called <code class="language-plaintext highlighter-rouge">mint</code>, so the full name is <code class="language-plaintext highlighter-rouge">ggez::mint::Vector2&lt;T&gt;</code>. The <code class="language-plaintext highlighter-rouge">&lt;T&gt;</code> denotes that <code class="language-plaintext highlighter-rouge">Vector2</code> is a generic type. Since all the graphics stuff in ggez is done with <code class="language-plaintext highlighter-rouge">f32</code>s, we want to use <code class="language-plaintext highlighter-rouge">Vector2&lt;f32&gt;</code>s. To make things easier, add this somewhere near the start of your file:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Vector</span> <span class="o">=</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">mint</span><span class="p">::</span><span class="n">Vector2</span><span class="o">&lt;</span><span class="nb">f32</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Now, our <code class="language-plaintext highlighter-rouge">Ball</code> struct can be this:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Ball</span> <span class="p">{</span>
+   <span class="n">rect</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">vel</span><span class="p">:</span> <span class="n">Vector</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now that we have our <code class="language-plaintext highlighter-rouge">Ball</code> struct, we can add it to our <code class="language-plaintext highlighter-rouge">MainState</code> struct:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MainState</span> <span class="p">{</span>
+   <span class="n">l_paddle</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">r_paddle</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">ball</span><span class="p">:</span> <span class="n">Ball</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, the only thing <code class="language-plaintext highlighter-rouge">MainState</code> needs is a way to store the scores, and for that we can use <code class="language-plaintext highlighter-rouge">u8</code>s. <code class="language-plaintext highlighter-rouge">u8</code>s will overflow if the score goes above 255 though, so maybe we should use <code class="language-plaintext highlighter-rouge">u16</code> just to be safe.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MainState</span> <span class="p">{</span>
+   <span class="n">l_paddle</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">r_paddle</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+   <span class="n">ball</span><span class="p">:</span> <span class="n">Ball</span><span class="p">,</span>
+   <span class="n">l_score</span><span class="p">:</span> <span class="nb">u16</span><span class="p">,</span>
+   <span class="n">r_score</span><span class="p">:</span> <span class="nb">u16</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<hr />
+
+<p>You might’ve noticed that as soon as we started adding new fields to <code class="language-plaintext highlighter-rouge">MainState</code> the program stopped compiling properly. That’s because of this line in our <code class="language-plaintext highlighter-rouge">main()</code> method:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{};</span>
+</code></pre></div></div>
+
+<p>We have to set every field of our <code class="language-plaintext highlighter-rouge">MainState</code> struct to declare a new one.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{</span>
+     <span class="n">l_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">),</span>
+     <span class="n">r_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">280.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">),</span>
+     <span class="n">ball</span><span class="p">:</span> <span class="n">Ball</span> <span class="p">{</span> <span class="n">rect</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">300.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">),</span> <span class="n">vel</span><span class="p">:</span> <span class="n">Vector</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span> <span class="p">},</span>
+     <span class="n">l_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="n">r_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="p">};</span>
+</code></pre></div></div>
+
+<p>This declaration is kind of awkward. I arbitrarily chose all the coordinates and sizes, and we’ll probably want to change everything later. To make that easier, let’s set up some consts at the start of the file. We also want to choose a screen size to work with.</p>
+
+<p>Here’s what I end up with:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">SCREEN_HEIGHT</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">600</span><span class="err">.</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">SCREEN_WIDTH</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">600</span><span class="err">.</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="n">X_OFFSET</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">20</span><span class="err">.</span><span class="p">;</span> <span class="c">// distance from each paddle to their respective walls</span>
+<span class="k">const</span> <span class="n">PADDLE_WIDTH</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">12</span><span class="err">.</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">PADDLE_HEIGHT</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">75</span><span class="err">.</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="n">BALL_RADIUS</span><span class="p">:</span> <span class="nb">f32</span> <span class="o">=</span> <span class="mi">10</span><span class="err">.</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Now, we can declare <code class="language-plaintext highlighter-rouge">main_state</code> like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{</span>
+     <span class="n">l_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">X_OFFSET</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">PADDLE_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">PADDLE_WIDTH</span><span class="p">,</span> <span class="n">PADDLE_HEIGHT</span><span class="p">),</span>
+     <span class="n">r_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">SCREEN_WIDTH</span> <span class="o">-</span> <span class="n">X_OFFSET</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">PADDLE_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">PADDLE_WIDTH</span><span class="p">,</span> <span class="n">PADDLE_HEIGHT</span><span class="p">),</span>
+     <span class="n">ball</span><span class="p">:</span> <span class="n">Ball</span> <span class="p">{</span> <span class="n">rect</span><span class="p">:</span> 
+         <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">SCREEN_WIDTH</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">BALL_RADIUS</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">BALL_RADIUS</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">BALL_RADIUS</span><span class="p">,</span> <span class="n">BALL_RADIUS</span><span class="p">),</span> 
+         <span class="n">vel</span><span class="p">:</span> <span class="n">Vector</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span> <span class="p">},</span>
+     <span class="n">l_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="n">r_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="p">};</span>
+</code></pre></div></div>
+
+<p>Adding consts makes the lines a lot longer. I’ve self formatted a bit, but luckily we can use <code class="language-plaintext highlighter-rouge">cargo fmt</code> to automatically format. This will also adjust anything else in the file that doesn’t meet the official Rust formatting guidelines.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">let</span> <span class="n">main_state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">MainState</span> <span class="p">{</span>
+     <span class="n">l_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span>
+         <span class="n">X_OFFSET</span><span class="p">,</span>
+         <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">PADDLE_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span>
+         <span class="n">PADDLE_WIDTH</span><span class="p">,</span>
+         <span class="n">PADDLE_HEIGHT</span><span class="p">,</span>
+     <span class="p">),</span>
+     <span class="n">r_paddle</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span>
+         <span class="n">SCREEN_WIDTH</span> <span class="o">-</span> <span class="n">X_OFFSET</span><span class="p">,</span>
+         <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">PADDLE_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span>
+         <span class="n">PADDLE_WIDTH</span><span class="p">,</span>
+         <span class="n">PADDLE_HEIGHT</span><span class="p">,</span>
+     <span class="p">),</span>
+     <span class="n">ball</span><span class="p">:</span> <span class="n">Ball</span> <span class="p">{</span>
+         <span class="n">rect</span><span class="p">:</span> <span class="nn">Rect</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span>
+             <span class="n">SCREEN_WIDTH</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">BALL_RADIUS</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span>
+             <span class="n">SCREEN_HEIGHT</span> <span class="err">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">BALL_RADIUS</span> <span class="err">/</span> <span class="mf">2.0</span><span class="p">,</span>
+             <span class="n">BALL_RADIUS</span><span class="p">,</span>
+             <span class="n">BALL_RADIUS</span><span class="p">,</span>
+         <span class="p">),</span>
+         <span class="n">vel</span><span class="p">:</span> <span class="n">Vector</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.0</span> <span class="p">},</span>
+     <span class="p">},</span>
+     <span class="n">l_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="n">r_score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="p">};</span>
+</code></pre></div></div>
+<hr />
+
+<h2 id="drawing">Drawing</h2>
+
+<p>So we’ve set up all our structs and written like 50 lines but the behavior of our program hasn’t changed a single bit. Now that our <code class="language-plaintext highlighter-rouge">MainState</code> actually has stuff in it though, we can draw it. This is, of course, done in the <code class="language-plaintext highlighter-rouge">draw()</code> method of our <code class="language-plaintext highlighter-rouge">MainState</code>.</p>
+
+<p>Before, the signature of <code class="language-plaintext highlighter-rouge">draw()</code> was:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span>
+</code></pre></div></div>
+
+<p>We didn’t use the field of type <code class="language-plaintext highlighter-rouge">&amp;mut ggez::Context</code> before, so we just left it unnamed with an underscore. Now, we’re going to use it so we should rename it to <code class="language-plaintext highlighter-rouge">ctx</code>.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span>
+</code></pre></div></div>
+
+<p>Do the same thing with your <code class="language-plaintext highlighter-rouge">update()</code> method.</p>
+
+<p>Drawing in ggez is pretty straightforward for Pong. We just have to draw each paddle and the ball. We also have to clear the screen in between frames. With more advanced games ggez has more efficient ways to draw things, but for Pong we can just draw each shape individually.</p>
+
+<p>To clear the screen, we just use <code class="language-plaintext highlighter-rouge">ggez::graphics::clear</code>. From the <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/fn.clear.html">ggez documentation</a>, we can see its full signature:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Context</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Color</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>From this, we know that it takes a mutable reference to a <code class="language-plaintext highlighter-rouge">Context</code>, which we have, and a <code class="language-plaintext highlighter-rouge">Color</code>, which we don’t. If you click on <code class="language-plaintext highlighter-rouge">Color</code> in the ggez web documentation, it will take you <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/struct.Color.html">to the <code class="language-plaintext highlighter-rouge">Color</code> documentation</a>. From the <code class="language-plaintext highlighter-rouge">Color</code> documentation, we see that we can initialize <code class="language-plaintext highlighter-rouge">Color</code>s with <code class="language-plaintext highlighter-rouge">ggez::graphics::Color::new(r, g, b, a)</code>. Knowing that, here’s our new <code class="language-plaintext highlighter-rouge">draw()</code> method:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ggez::graphics::Color</code> is really long to write out, but we won’t use it anywhere other than in <code class="language-plaintext highlighter-rouge">draw()</code> so we can do a scoped <code class="language-plaintext highlighter-rouge">use ggez::graphics::Color</code> at the start of it. We should also just <code class="language-plaintext highlighter-rouge">use ggez::graphics</code> because there’s a lot more stuff from it we’ll use in <code class="language-plaintext highlighter-rouge">draw()</code>.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Color</span><span class="p">;</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">graphics</span><span class="p">;</span>
+
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span>
+     <span class="nf">Ok</span><span class="p">(())</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>After <code class="language-plaintext highlighter-rouge">clear</code>ing the screen, we need to actually <code class="language-plaintext highlighter-rouge">present()</code> it to see the changes. This is done with <code class="language-plaintext highlighter-rouge">ggez::graphics::present()</code>. All drawing code needs to be done between <code class="language-plaintext highlighter-rouge">clear()</code> and <code class="language-plaintext highlighter-rouge">present()</code>.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Color</span><span class="p">;</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">graphics</span><span class="p">;</span>
+
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span> <span class="c">// Color::new(0.0, 0.0, 0.0, 1.0) is black</span>
+     <span class="c">// all drawing stuff goes here</span>
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">present</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+     <span class="nf">Ok</span><span class="p">(())</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>On compiling and running this, we get a black window. We also get a familiar compiler warning:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>warning: unused `std::result::Result` that must be used
+  --&gt; src/main.rs:38:9
+   |
+38 |         graphics::present(ctx);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_must_use)]` on by default
+   = note: this `Result` may be an `Err` variant, which should be handled
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ggez::graphics::present</code> returns a <code class="language-plaintext highlighter-rouge">Result</code>, more specifically, a <code class="language-plaintext highlighter-rouge">GameResult</code>. Rust wants us to handle this if it’s an error, but the game can’t really continue if the graphics don’t work. Because of that, we can just <code class="language-plaintext highlighter-rouge">unwrap()</code> the <code class="language-plaintext highlighter-rouge">Result</code>, or <code class="language-plaintext highlighter-rouge">.expect()</code> it if we want a more specific error message (IMO it’s best to always use expects instead of unwraps but it gets tedious). This is a common theme with game programming in Rust because a lot of game errors just aren’t recoverable.</p>
+
+<p>Our new <code class="language-plaintext highlighter-rouge">draw()</code> method looks like this:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Color</span><span class="p">;</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">graphics</span><span class="p">;</span>
+
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span> <span class="c">// Color::new(0.0, 0.0, 0.0, 1.0) is black</span>
+     <span class="c">// all drawing stuff goes here</span>
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">present</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error presenting"</span><span class="p">);</span>
+     <span class="nf">Ok</span><span class="p">(())</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>There’s a few steps to actually draw the paddles and the ball. First, we have to make graphics meshes, using <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/struct.Mesh.html">ggez’s <code class="language-plaintext highlighter-rouge">ggez::graphics::Mesh</code></a>. <code class="language-plaintext highlighter-rouge">ggez::graphics::Mesh</code> has a <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/struct.Mesh.html#method.new_rectangle"><code class="language-plaintext highlighter-rouge">new_rectangle()</code> method</a> with this signature:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">new_rectangle</span><span class="p">(</span>
+    <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Context</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">DrawMode</span><span class="p">,</span>
+    <span class="n">bounds</span><span class="p">:</span> <span class="n">Rect</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">Color</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">GameResult</span><span class="o">&lt;</span><span class="n">Mesh</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>We already have <code class="language-plaintext highlighter-rouge">ctx</code> and <code class="language-plaintext highlighter-rouge">bounds</code>, and we know how to get <code class="language-plaintext highlighter-rouge">color</code>, but <code class="language-plaintext highlighter-rouge">DrawMode</code> is new. From clicking on <code class="language-plaintext highlighter-rouge">DrawMode</code> in the documentation, we find that <code class="language-plaintext highlighter-rouge">ggez::graphics::DrawMode</code> has a <code class="language-plaintext highlighter-rouge">fill()</code> method, which specifies that ggez will fill the shape as opposed to just drawing its outline. We also now know that <code class="language-plaintext highlighter-rouge">new_rectangle()</code> returns a <code class="language-plaintext highlighter-rouge">GameResult</code>, but it’s still unrecoverable so we should <code class="language-plaintext highlighter-rouge">expect()</code> it.</p>
+
+<p>Knowing this, to make a mesh for our ball, we can use this line:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">ball_mesh</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_rectangle</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span> <span class="k">self</span><span class="py">.ball.rect</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+   <span class="nf">.expect</span><span class="p">(</span><span class="s">"error creating ball mesh"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>To draw it, we use <a href="https://docs.rs/ggez/0.5.1/ggez/graphics/fn.draw.html"><code class="language-plaintext highlighter-rouge">ggez::graphics::draw()</code></a>, which takes a reference to a <code class="language-plaintext highlighter-rouge">Drawable</code> and <code class="language-plaintext highlighter-rouge">DrawParams</code>. Our <code class="language-plaintext highlighter-rouge">ball_mesh</code> is <code class="language-plaintext highlighter-rouge">Drawable</code>, so we just need to figure out what to use for <code class="language-plaintext highlighter-rouge">DrawParams</code>. From the (<code class="language-plaintext highlighter-rouge">DrawParam</code> documentation)[https://docs.rs/ggez/0.5.1/ggez/graphics/struct.DrawParam.html] we can see that it has a <code class="language-plaintext highlighter-rouge">default()</code> implementation, so let’s just use that. Again, <code class="language-plaintext highlighter-rouge">draw()</code> returns a result which we should <code class="language-plaintext highlighter-rouge">.expect()</code></p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ball_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Our draw method (after running <code class="language-plaintext highlighter-rouge">cargo fmt</code>) now looks like this:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">graphics</span><span class="p">;</span>
+     <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Color</span><span class="p">;</span>
+
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span> <span class="c">// Color::new(0.0, 0.0, 0.0, 1.0) is black</span>
+
+     <span class="k">let</span> <span class="n">ball_mesh</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_rectangle</span><span class="p">(</span>
+         <span class="n">ctx</span><span class="p">,</span>
+         <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span>
+         <span class="k">self</span><span class="py">.ball.rect</span><span class="p">,</span>
+         <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+     <span class="p">)</span>
+     <span class="nf">.expect</span><span class="p">(</span><span class="s">"error creating ball mesh"</span><span class="p">);</span>
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ball_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span>
+         <span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+
+     <span class="nn">graphics</span><span class="p">::</span><span class="nf">present</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error presenting"</span><span class="p">);</span>
+     <span class="nf">Ok</span><span class="p">(())</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>If we compile and run our program, we get a white rectangle roughly in the middle of the screen. It’s not quite centered because we haven’t actually set our screen width and height properly, but we’ll do that later.</p>
+
+<p>Repeat the steps for drawing the ball on the l_paddle and r_paddle and we get our final <code class="language-plaintext highlighter-rouge">draw()</code> method for now:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">fn</span> <span class="nf">draw</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">GameResult</span> <span class="p">{</span>
+        <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="n">graphics</span><span class="p">;</span>
+        <span class="k">use</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">graphics</span><span class="p">::</span><span class="n">Color</span><span class="p">;</span>
+
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">clear</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span> <span class="c">// Color::new(0.0, 0.0, 0.0, 1.0) is black</span>
+
+        <span class="k">let</span> <span class="n">ball_mesh</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_rectangle</span><span class="p">(</span>
+            <span class="n">ctx</span><span class="p">,</span>
+            <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span>
+            <span class="k">self</span><span class="py">.ball.rect</span><span class="p">,</span>
+            <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nf">.expect</span><span class="p">(</span><span class="s">"error creating ball mesh"</span><span class="p">);</span>
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ball_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span>
+            <span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+
+        <span class="k">let</span> <span class="n">l_paddle_mesh</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_rectangle</span><span class="p">(</span>
+            <span class="n">ctx</span><span class="p">,</span>
+            <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span>
+            <span class="k">self</span><span class="py">.l_paddle</span><span class="p">,</span>
+            <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nf">.expect</span><span class="p">(</span><span class="s">"error creating ball mesh"</span><span class="p">);</span>
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">l_paddle_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span>
+            <span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+
+        <span class="k">let</span> <span class="n">r_paddle_mesh</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_rectangle</span><span class="p">(</span>
+            <span class="n">ctx</span><span class="p">,</span>
+            <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span>
+            <span class="k">self</span><span class="py">.r_paddle</span><span class="p">,</span>
+            <span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nf">.expect</span><span class="p">(</span><span class="s">"error creating ball mesh"</span><span class="p">);</span>
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r_paddle_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span>
+            <span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ball_mesh</span><span class="p">,</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">default</span><span class="p">())</span>
+            <span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing ball mesh"</span><span class="p">);</span>
+
+        <span class="nn">graphics</span><span class="p">::</span><span class="nf">present</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error presenting"</span><span class="p">);</span>
+        <span class="nf">Ok</span><span class="p">(())</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>There’s a lot of duplicated code here from creating all the new rectangle meshes and drawing them so sometimes I make a simple function like <code class="language-plaintext highlighter-rouge">fn draw_rectangle(ctx: &amp;mut Context, rect: &amp;graphics::Rect) -&gt; GameResult</code>, but that’s overkill for Pong.</p>
+
+<hr />
+
+<p>It’s annoying that stuff isn’t properly centered, so let’s set our window size to the consts that we used earlier. To create our window and ggez context before, we used this:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Mikail Khan"</span><span class="p">)</span>
+        <span class="nf">.build</span><span class="p">()</span>
+        <span class="nf">.unwrap</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Here, we created a <a href="https://docs.rs/ggez/0.5.1/ggez/struct.ContextBuilder.html"><code class="language-plaintext highlighter-rouge">ContextBuilder</code></a> with the default settings and used <code class="language-plaintext highlighter-rouge">build()</code> immediately. To set our screen size, we want to set the <code class="language-plaintext highlighter-rouge">ggez::conf::WindowMode</code> of our ContextBuilder. There’s a lot of settings but you can find them all in the documentation. Here, all we have to use is <code class="language-plaintext highlighter-rouge">.dimensions()</code>.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"Pong"</span><span class="p">,</span> <span class="s">"Mikail Khan"</span><span class="p">)</span>
+        <span class="nf">.window_mode</span><span class="p">(</span><span class="nn">ggez</span><span class="p">::</span><span class="nn">conf</span><span class="p">::</span><span class="nn">WindowMode</span><span class="p">::</span><span class="nf">default</span><span class="p">()</span><span class="nf">.dimensions</span><span class="p">(</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span><span class="p">))</span>
+        <span class="nf">.build</span><span class="p">()</span>
+        <span class="nf">.unwrap</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>After adding this, the window size is set and everything is nicely centered.</p>
+
+<hr />
+
+<p>You can find the updated code for this part <a href="https://github.com/mkhan45/ggez-pong-tutorial/tree/master/part2">here</a>.</p>
+
+<p>In the next part, we’ll make Pong playable by finishing the update loop. You can find it at <a href="https://mkhan45.github.io/2020/05/21/Pong-tutorial-with-ggez-Part-3.html">https://mkhan45.github.io/2020/05/21/Pong-tutorial-with-ggez-Part-3.html</a></p>
+
+  </div><a class="u-url" href="/2020/05/20/Pong-tutorial-with-ggez-Part-2.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pitfalls when writing a go server for aws ec2 | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Pitfalls when writing a go server for aws ec2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I’ve recently been writing a Go server for my my website at mikail-khan.com. I’ve never used Go, and I’ve never deployed a server to a domain with https using essentially just a Linux server. Here are a few steps I had difficulty with:" />
+<meta property="og:description" content="I’ve recently been writing a Go server for my my website at mikail-khan.com. I’ve never used Go, and I’ve never deployed a server to a domain with https using essentially just a Linux server. Here are a few steps I had difficulty with:" />
+<link rel="canonical" href="http://localhost:4000/2020/05/16/pitfalls-when-writing-a-go-server-for-AWS-ec2.html" />
+<meta property="og:url" content="http://localhost:4000/2020/05/16/pitfalls-when-writing-a-go-server-for-AWS-ec2.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-16T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"I’ve recently been writing a Go server for my my website at mikail-khan.com. I’ve never used Go, and I’ve never deployed a server to a domain with https using essentially just a Linux server. Here are a few steps I had difficulty with:","url":"http://localhost:4000/2020/05/16/pitfalls-when-writing-a-go-server-for-AWS-ec2.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/05/16/pitfalls-when-writing-a-go-server-for-AWS-ec2.html"},"headline":"Pitfalls when writing a go server for aws ec2","dateModified":"2020-05-16T00:00:00-04:00","datePublished":"2020-05-16T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Pitfalls when writing a go server for aws ec2</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-16T00:00:00-04:00" itemprop="datePublished">May 16, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I’ve recently been writing a Go server for my my website at <a href="https://mikail-khan.com">mikail-khan.com</a>. I’ve never used Go, and I’ve never deployed a server to a domain with https using essentially just a Linux server. Here are a few steps I had difficulty with:</p>
+
+<hr />
+<h3 id="1-pointing-an-https-domain-towards-a-singular-ec2-instance">1. Pointing an HTTPS domain towards a singular EC2 instance</h3>
+
+<p>There’s plenty of guides around for, especially in the AWS docs, for routing the domain to an Elastic IP using AWS Load Balancers etc., but given that I don’t want to pay anything, I just wanted to route everything to a single EC2 instance.</p>
+
+<p>The first thing I tried was to just use the public IPv4 address of the instance in a Hosted Zone Record Set in AWS Route 53, and that does get things part of the way there. Unfortunately, I had my server setup to host on port :8000, so I had to go to mikail-khan.com:8000 to access the site.</p>
+
+<p>As it turns out, the default port for HTTP is :80 and the default port for HTTPS was :443. I swear I used to know that. The first step in fixing it, of course, was setting the server to host on port :443. Unfortunately, I still couldn’t access it just mby typing mikail-khan.com in the browser, I had to use https://mikail-khan.com. I spent a long time trying to fix that and went pretty backwards, but the solution was a three line fix with Go.</p>
+
+<p>All I had to do was redirect requests from the HTTP port (:80) to the HTTPS port (:443). This is done with this function:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">httpRedirect</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">target</span> <span class="o">:=</span> <span class="s">"https://"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">Host</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">URL</span><span class="o">.</span><span class="n">Path</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">URL</span><span class="o">.</span><span class="n">RawQuery</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">target</span> <span class="o">+=</span> <span class="s">"?"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">URL</span><span class="o">.</span><span class="n">RawQuery</span>
+	<span class="p">}</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"redirect to %s"</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">Redirect</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">StatusTemporaryRedirect</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And I added this line at the start of <code class="language-plaintext highlighter-rouge">main()</code>:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">go</span> <span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":80"</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">HandlerFunc</span><span class="p">(</span><span class="n">httpRedirect</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>This is clearly a spot where easily useable green threads are pretty nice.
+___</p>
+
+<h3 id="2-https-certificate">2. HTTPS Certificate</h3>
+
+<p>This is somewhat a continuation of the first one, but I think it’s worth separating.</p>
+
+<p>Once I’d got mikail-khan.com to point to my EC2 instance, the biggest problem was that browsers marked my site as insecure with a big warning sign to get away from it. This is also something that AWS has plenty of documentation for, but it only really works if you pay.</p>
+
+<p>I’ve known about Let’s Encrypt for a few months but I’ve never actually used it. The Certbot script from the site didn’t work on the AWS distro the EC2 instance uses, but since I think the distro is just some modification of RHEL/CentOS/Fedora, I tried to just edit the script. Unfortunately, it’s a long script and I’m lazy, so I tried to find other solutions.</p>
+
+<p>As it turns out, Certbot is in the package manager repos for the AWS distro, so I installed it with <code class="language-plaintext highlighter-rouge">yum install certbot</code> and generated the keys pretty easily. From there all I had to do was use this line in my go server:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ListenAndServeTLS</span><span class="p">(</span><span class="s">":443"</span><span class="p">,</span> <span class="s">"keys/fullchain.pem"</span><span class="p">,</span> <span class="s">"keys/privkey.pem"</span><span class="p">,</span> <span class="n">server</span><span class="p">))</span>
+</code></pre></div></div>
+<hr />
+
+<h3 id="3-go-file-organization">3. Go file organization</h3>
+
+<p>After I got the very basics of the server down, I wanted to add a new file for extra functionality. I’ve had problems figuring this out in pretty much every language I’ve used; regardless of how good the documentation is, I always seem to misunderstand something.</p>
+
+<p>Go, as always, handles this problem pretty simply. All files in the same package have to be in the same folder, and they must have <code class="language-plaintext highlighter-rouge">package {whatever}</code> at the start of the file. To use anything further, you should create a subdirectory and a new package. There should also be a <code class="language-plaintext highlighter-rouge">go.mod</code> file which is created with <code class="language-plaintext highlighter-rouge">go mod init {name}</code></p>
+
+<p>tl; dr, if I want my main method to be in <code class="language-plaintext highlighter-rouge">main.go</code> and I want it to use stuff from <code class="language-plaintext highlighter-rouge">extra.go</code>,
+<code class="language-plaintext highlighter-rouge">main.go</code> could be simplified to:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">extra</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">extra.go</code> could look like:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="s">"log"</span>
+
+<span class="k">func</span> <span class="n">Extra</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">log</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"hi</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>and you’d probably want a <code class="language-plaintext highlighter-rouge">go.mod</code> file with:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module main
+go 1.14
+</code></pre></div></div>
+<p>It’s important to note that all the files would have to be in the same folder, and functions that are used between files have to be capitalized, i.e. <code class="language-plaintext highlighter-rouge">func extra()</code> isn’t get exported out of <code class="language-plaintext highlighter-rouge">extra.go</code>, but <code class="language-plaintext highlighter-rouge">func Extra()</code> is.</p>
+
+<hr />
+
+<h3 id="4-httpstatusmovedpermanently-301-is-cached-by-the-browser">4. http.StatusMovedPermanently (301) is cached by the browser</h3>
+
+<p>This isn’t unique to Go or AWS EC2, but it was a huge pain to debug. Basically I had an endpoint in my server which just did some stuff and then redirected, but the stuff that it did was pretty important. The moment of peak confusion for me was when I turned off my server and the redirect still happened, but it eventually pointed me in the right direction since I realized that the browser must be caching something. My solution was to just switch the status code to http.StatusTemporaryRedirect (307).</p>
+
+<p>In the words of a friend who’s much more experienced with writing servers, it’s best to “avoid 301s whenever humanly possible.”</p>
+
+  </div><a class="u-url" href="/2020/05/16/pitfalls-when-writing-a-go-server-for-AWS-ec2.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>What Makes A Programming Language Too Complicated? | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="What Makes A Programming Language Too Complicated?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="One of the most important aspects of a programming language is its complexity. Languages that are too simple are often thought of as unexpressive and long winded, while languages that are too complicated are hard to learn and result in incomprehensive codebases. As such, programming language designers have to take a stance on complexity eventually. For example, simplicity is arguably Go’s most important feature, whereas C++ seems to add pretty much any language feature that becomes popular." />
+<meta property="og:description" content="One of the most important aspects of a programming language is its complexity. Languages that are too simple are often thought of as unexpressive and long winded, while languages that are too complicated are hard to learn and result in incomprehensive codebases. As such, programming language designers have to take a stance on complexity eventually. For example, simplicity is arguably Go’s most important feature, whereas C++ seems to add pretty much any language feature that becomes popular." />
+<link rel="canonical" href="http://localhost:4000/2020/08/04/What-makes-a-programming-language-too-complicated.html" />
+<meta property="og:url" content="http://localhost:4000/2020/08/04/What-makes-a-programming-language-too-complicated.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-04T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"One of the most important aspects of a programming language is its complexity. Languages that are too simple are often thought of as unexpressive and long winded, while languages that are too complicated are hard to learn and result in incomprehensive codebases. As such, programming language designers have to take a stance on complexity eventually. For example, simplicity is arguably Go’s most important feature, whereas C++ seems to add pretty much any language feature that becomes popular.","url":"http://localhost:4000/2020/08/04/What-makes-a-programming-language-too-complicated.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/08/04/What-makes-a-programming-language-too-complicated.html"},"headline":"What Makes A Programming Language Too Complicated?","dateModified":"2020-08-04T00:00:00-04:00","datePublished":"2020-08-04T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">What Makes A Programming Language Too Complicated?</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-08-04T00:00:00-04:00" itemprop="datePublished">Aug 4, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>One of the most important aspects of a programming language is its complexity. Languages that are too simple are often thought of as unexpressive and long winded, while languages that are too complicated are hard to learn and result in incomprehensive codebases. As such, programming language designers have to take a stance on complexity eventually. For example, simplicity is arguably Go’s most important feature, whereas C++ seems to add pretty much any language feature that becomes popular.</p>
+
+<p>The perceived complexity of a programming language isn’t just a function of how many language features it has or how many ways there are to accomplish the same task. In both of these metrics, Rust is close to C++, but language complexity isn’t one of the main popular criticisms of Rust. While Rust is commonly criticized for being difficult to learn and being generally slow to write ( both side effects of its memory management model), most common C++ criticisms have to do with either having too many features or a specific feature which makes the program less clear. Python, like Rust, is a very featureful language which is not commonly thought of as complicated. Part of this is because of its target use case; low level programmers have much more reason to care about simplicity than most Python developers. However, regardless of the community, Python also gets less criticism for its complexity than C++ because of its lanuage design.</p>
+
+<p>Rust’s and Python’s complexity are less harmful than C++’s because new features are much more carefully implemented so that even when there’s multiple ways to accomplish the same task, one of these ways is very clearly better. Rust especially forces developers towards a uniform path with its ownership model.</p>
+
+<hr />
+
+<p>Take the following problem from <a href="https://exercism.io">Exercism</a>:</p>
+<blockquote>
+  <p>An anagram is a rearrangement of letters to form a new word. Given a word and a list of candidates, select the sublist of anagrams of the given word.</p>
+</blockquote>
+
+<blockquote>
+  <p>Given “listen” and a list of candidates like “enlists” “google” “inlets” “banana” the program should return a list containing “inlets”.</p>
+</blockquote>
+
+<p>The newest C++ solution (only the relevant method and a helper) is:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">anagram</span><span class="o">::</span><span class="n">matches</span> <span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">candidates</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">candidate</span><span class="o">:</span> <span class="n">candidates</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">candidate_lower</span> <span class="o">=</span> <span class="n">candidate</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">transform</span> <span class="p">(</span><span class="n">candidate</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">candidate</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">candidate_lower</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="o">::</span><span class="n">tolower</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">candidate_lower</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">candidate</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">bool</span> <span class="n">anagram</span><span class="o">::</span><span class="n">match</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">word</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">is_permutation</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">word</span><span class="p">.</span><span class="n">begin</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="n">word</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="n">word</span> <span class="o">!=</span> <span class="n">input</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>It’s fairly sane IMO, and even if you’re new to C++ it’s pretty understandable.</p>
+
+<p>Here’s the top rated solution’s relevant method (<code class="language-plaintext highlighter-rouge">is_anagram</code> is pretty much the same as <code class="language-plaintext highlighter-rouge">anagram::match</code> above)</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">matches</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">candidates</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">matched</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">copy_if</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">candidates</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">candidates</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">matched</span><span class="p">),</span> <span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">auto</span> <span class="n">candidate</span><span class="p">)</span> <span class="p">{</span> 
+            <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">loweredCandidate</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">candidate</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">candidate</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">loweredCandidate</span><span class="p">),</span> <span class="o">::</span><span class="n">tolower</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">is_anagram</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_str</span><span class="p">,</span> <span class="n">loweredCandidate</span><span class="p">);</span> 
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">matched</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>It’s short, concise, and incomprehensible. I’m fairly certain that the author wouldn’t write this in an actual codebase though. As always, it’s pretty easy to understand what’s going on once you understand the pieces, but C++’s awkward iterator and lambda implementation means that most C++ developers avoid them and consequently wouldn’t be able to understand this code very quickly. Many of the C++ solutions to this problem used iterators only for <code class="language-plaintext highlighter-rouge">std::is_permutation</code>, and hardly any used anonymous functons.</p>
+
+<p>The top rated Rust solution to the same problem is:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="n">anagrams_for</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">,</span> <span class="n">candidates</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="nb">Vec</span><span class="o">&lt;&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">let</span> <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="nf">.to_lowercase</span><span class="p">();</span>
+  <span class="k">let</span> <span class="n">sorted_word</span> <span class="o">=</span> <span class="nf">sort</span><span class="p">(</span><span class="o">&amp;</span><span class="n">word</span><span class="p">);</span>
+  <span class="n">candidates</span>
+    <span class="nf">.iter</span><span class="p">()</span>
+    <span class="nf">.cloned</span><span class="p">()</span>
+    <span class="nf">.filter</span><span class="p">(|</span><span class="o">&amp;</span><span class="n">candidate</span><span class="p">|</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="n">can</span> <span class="o">=</span> <span class="n">candidate</span><span class="nf">.to_lowercase</span><span class="p">();</span>
+      <span class="nf">sort</span><span class="p">(</span><span class="o">&amp;</span><span class="n">can</span><span class="p">)</span> <span class="o">==</span> <span class="n">sorted_word</span> <span class="o">&amp;&amp;</span> <span class="n">can</span> <span class="o">!=</span> <span class="n">word</span>
+    <span class="p">})</span>
+    <span class="py">.collect</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="o">&gt;&gt;</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This solution also uses iterators/anonymous functions, and so does every other solution of the five or six I clicked on. Iterators and closures are pretty ergonomic in Rust; they’re easy to read, make dealing with the borrow checker easier sometimes, and on top of that iterators are generally faster than normal for loops.</p>
+
+<p>The top rated Python solution for is_anagram (comments removed) is:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">detect_anagrams</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">candidates</span><span class="p">):</span>
+	<span class="k">return</span> <span class="p">[</span><span class="n">candidate</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">is_an_anagram</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">is_an_anagram</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>
+	<span class="n">original</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="n">candidate</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">original</span> <span class="o">!=</span> <span class="n">candidate</span> <span class="ow">and</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">original</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Pretty much every Python solution uses the same process here. Of course, Python hides most of the complexity.</p>
+
+<hr />
+
+<p>These <code class="language-plaintext highlighter-rouge">is_anagram</code> solutions demonstrate some important aspects of each language. While C++ has a short, concise way to solve the problem, hardly anyone uses the features required to understand it, namely iterators. For that reason, most C++ devs will opt to solve is_anagram primarily using normal for loops.</p>
+
+<p>On the other hand, Rust also has iterators, and almost everyone used them to solve the problem. Python has even more ways to sove the problem, but almost everyone just uses a list comprehension.</p>
+
+<p>On the other side of the spectrum, there’s languages like C and Go, which emphasize simplicity over anything else. Go only has one way to solve the problem; it would take intentional obfuscation to make a solution that’s opaque to other Go developers.</p>
+
+<p>What makes a programming language too complicated isn’t the number of features it has, it’s the number of features the language has but people don’t use.</p>
+
+<blockquote>
+  <p>Within C++, there is a much smaller and cleaner language struggling to get out. – Bjarne Stroustrup, creator of C++</p>
+</blockquote>
+
+  </div><a class="u-url" href="/2020/08/04/What-makes-a-programming-language-too-complicated.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

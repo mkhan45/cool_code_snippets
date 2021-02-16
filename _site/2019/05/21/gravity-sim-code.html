@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Gravity Sim Code | Mikail Khan</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Gravity Sim Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Gravity Sim Overview" />
+<meta property="og:description" content="Gravity Sim Overview" />
+<link rel="canonical" href="http://localhost:4000/2019/05/21/gravity-sim-code.html" />
+<meta property="og:url" content="http://localhost:4000/2019/05/21/gravity-sim-code.html" />
+<meta property="og:site_name" content="Mikail Khan" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-21T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"Gravity Sim Overview","url":"http://localhost:4000/2019/05/21/gravity-sim-code.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/05/21/gravity-sim-code.html"},"headline":"Gravity Sim Code","dateModified":"2019-05-21T00:00:00-04:00","datePublished":"2019-05-21T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Mikail Khan" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Mikail Khan</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Gravity Sim Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-05-21T00:00:00-04:00" itemprop="datePublished">May 21, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="gravity-sim-overview">Gravity Sim Overview</h1>
+
+<p>This is a more in depth overview of how my gravity simulator works. You should read <a href="https://mkhan45.github.io/blog/gravity-sim">my previous post</a> if you haven’t.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<p>I’m using Rust and a game engine called ggez. The main method is pretty short.</p>
+
+<hr />
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">GameResult</span><span class="p">{</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">)</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">ggez</span><span class="p">::</span><span class="nn">ContextBuilder</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"N-body gravity sim"</span><span class="p">,</span> <span class="s">"Fish"</span><span class="p">)</span>
+        <span class="nf">.window_setup</span><span class="p">(</span><span class="nn">ggez</span><span class="p">::</span><span class="nn">conf</span><span class="p">::</span><span class="nn">WindowSetup</span><span class="p">::</span><span class="nf">default</span><span class="p">()</span><span class="nf">.title</span><span class="p">(</span><span class="s">"N-body gravity sim"</span><span class="p">))</span>
+        <span class="nf">.window_mode</span><span class="p">(</span><span class="nn">ggez</span><span class="p">::</span><span class="nn">conf</span><span class="p">::</span><span class="nn">WindowMode</span><span class="p">::</span><span class="nf">default</span><span class="p">()</span><span class="nf">.dimensions</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">800.0</span><span class="p">))</span>
+        <span class="nf">.build</span><span class="p">()</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error building context"</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">MainState</span><span class="p">::</span><span class="nf">new</span><span class="p">()</span><span class="nf">.clone</span><span class="p">();</span>
+
+    <span class="nn">event</span><span class="p">::</span><span class="nf">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">event_loop</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>All this does is initialize a ggez window that uses MainState, a struct that controls the whole game.</p>
+
+<hr />
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">MainState</span> <span class="p">{</span>
+        <span class="n">bodies</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Body</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="n">start_point</span><span class="p">:</span> <span class="n">Point2</span><span class="p">,</span>
+        <span class="n">zoom</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+        <span class="n">offset</span><span class="p">:</span> <span class="n">Point2</span><span class="p">,</span>
+        <span class="n">density</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+        <span class="n">mouse_pos</span><span class="p">:</span> <span class="n">Point2</span><span class="p">,</span>
+        <span class="n">trail_length</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+        <span class="n">mouse_pressed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">paused</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">predict_body</span><span class="p">:</span> <span class="n">Body</span><span class="p">,</span>
+        <span class="n">predict_speed</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+        <span class="n">integrator</span><span class="p">:</span> <span class="n">Integrator</span><span class="p">,</span>
+        <span class="n">help_menu</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">fast_forward</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+        <span class="n">step_size</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There’s a lot of stuff stored inside of MainState, but most important is <code class="language-plaintext highlighter-rouge">bodies</code>. This is where every planet/star is stored. This is the declaration for the <code class="language-plaintext highlighter-rouge">Body</code> struct:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">struct</span> <span class="n">Body</span> <span class="p">{</span>
+        <span class="k">pub</span> <span class="n">pos</span><span class="p">:</span> <span class="n">Point2</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">mass</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">velocity</span><span class="p">:</span> <span class="n">Vector2</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">trail</span><span class="p">:</span> <span class="n">VecDeque</span><span class="o">&lt;</span><span class="n">Point2</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">trail_length</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">past_accel</span><span class="p">:</span> <span class="n">Vector2</span><span class="p">,</span>
+        <span class="k">pub</span> <span class="n">current_accel</span><span class="p">:</span> <span class="n">Vector2</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To run the actual simulation, ggez runs a method, <code class="language-plaintext highlighter-rouge">update</code>, every frame. Here’s the most important part of it:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">!</span><span class="k">self</span><span class="py">.paused</span><span class="p">{</span> <span class="c">//physics sim</span>
+    <span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="k">self</span><span class="py">.fast_forward</span><span class="p">)</span><span class="nf">.for_each</span><span class="p">(|</span><span class="mi">_</span><span class="n">i</span><span class="p">|{</span>
+            <span class="k">self</span><span class="py">.bodies</span> <span class="o">=</span> <span class="nf">update_velocities_and_collide</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.bodies</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.integrator</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.step_size</span><span class="p">);</span>
+            <span class="o">...</span>
+            <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Basically, it calls the actual physics sim method <code class="language-plaintext highlighter-rouge">fast_forward</code> times. <code class="language-plaintext highlighter-rouge">fast_forward</code> is a simple multiplier on simulation time so that when the step size is decreased to increase precision I can keep things from getting stagnant.</p>
+
+<hr />
+
+<p>The actual math and physics is in <code class="language-plaintext highlighter-rouge">update_velocities_and_collide</code>. For simplicity, I removed everything unrelated to the actual gravity.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">update_velocities_and_collide</span><span class="p">(</span><span class="n">bodies</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Body</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Integrator</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">f32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Body</span><span class="o">&gt;</span><span class="p">{</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">bodies</span> <span class="o">=</span> <span class="n">bodies</span><span class="nf">.clone</span><span class="p">();</span>
+
+    <span class="o">...</span>
+
+        <span class="k">for</span> <span class="n">current_body_i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">bodies</span><span class="nf">.len</span><span class="p">(){</span>
+            <span class="n">bodies</span><span class="p">[</span><span class="n">current_body_i</span><span class="p">]</span><span class="py">.current_accel</span> <span class="o">=</span> <span class="nn">Vector2</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+
+            <span class="k">for</span> <span class="n">other_body_i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">bodies</span><span class="nf">.len</span><span class="p">(){</span>
+                <span class="k">if</span> <span class="n">other_body_i</span> <span class="o">!=</span> <span class="n">current_body_i</span> <span class="p">{</span>
+                    <span class="k">let</span> <span class="n">other_body</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bodies</span><span class="p">[</span><span class="n">other_body_i</span><span class="p">]</span><span class="nf">.clone</span><span class="p">();</span>
+                    <span class="k">let</span> <span class="n">current_body</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">bodies</span><span class="p">[</span><span class="n">current_body_i</span><span class="p">];</span>
+
+                    <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="nf">distance</span><span class="p">(</span><span class="o">&amp;</span><span class="n">other_body</span><span class="py">.pos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current_body</span><span class="py">.pos</span><span class="p">);</span>
+                    <span class="k">let</span> <span class="n">a_mag</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="o">*</span><span class="n">other_body</span><span class="py">.mass</span><span class="p">)</span><span class="err">/</span><span class="p">(</span><span class="n">r</span><span class="nf">.powi</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span> <span class="c">//acceleration = Gm_2/r^2</span>
+                    <span class="k">let</span> <span class="n">angle</span> <span class="o">=</span> <span class="nf">angle</span><span class="p">(</span><span class="o">&amp;</span><span class="n">other_body</span><span class="py">.pos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current_body</span><span class="py">.pos</span><span class="p">);</span>
+
+                    <span class="c">//if two bodies collide, add them to remove list and create new body that's a combination of both</span>
+                    <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">other_body</span><span class="py">.radius</span> <span class="o">+</span> <span class="n">current_body</span><span class="py">.radius</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">collision_blacklist</span><span class="nf">.contains</span><span class="p">(</span><span class="o">&amp;</span><span class="n">current_body_i</span><span class="p">){</span>
+                        <span class="n">collision_blacklist</span><span class="nf">.insert</span><span class="p">(</span><span class="n">current_body_i</span><span class="p">);</span>
+                        <span class="n">collision_blacklist</span><span class="nf">.insert</span><span class="p">(</span><span class="n">other_body_i</span><span class="p">);</span>
+                        <span class="n">collision_bodies</span><span class="nf">.push</span><span class="p">(</span><span class="nf">collide</span><span class="p">(</span><span class="o">&amp;</span><span class="n">current_body</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">other_body</span><span class="p">));</span>
+                    <span class="p">}</span>
+
+                    <span class="n">current_body</span><span class="py">.current_accel</span> <span class="o">+=</span> <span class="nn">Vector2</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">angle</span><span class="nf">.cos</span><span class="p">()</span> <span class="o">*</span> <span class="n">a_mag</span><span class="p">,</span> <span class="n">angle</span><span class="nf">.sin</span><span class="p">()</span> <span class="o">*</span> <span class="n">a_mag</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">match</span> <span class="n">method</span> <span class="p">{</span>
+                <span class="o">&amp;</span><span class="nn">Integrator</span><span class="p">::</span><span class="n">Euler</span> <span class="k">=&gt;</span> <span class="n">bodies</span><span class="p">[</span><span class="n">current_body_i</span><span class="p">]</span><span class="nf">.update_euler</span><span class="p">(</span><span class="n">step_size</span><span class="p">),</span>
+                    <span class="o">&amp;</span><span class="nn">Integrator</span><span class="p">::</span><span class="n">Verlet</span> <span class="k">=&gt;</span> <span class="n">bodies</span><span class="p">[</span><span class="n">current_body_i</span><span class="p">]</span><span class="nf">.update_verlet</span><span class="p">(</span><span class="n">step_size</span><span class="p">),</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">bodies</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What this method does is loop through the <code class="language-plaintext highlighter-rouge">Vec&lt;Body&gt;</code> and calculate the acceleration of each individual body. It’s O(n^2), but I don’t think there’s a way around that. This is one of the first bits of code I wrote for this, and looking at it now I think I would’ve used <code class="language-plaintext highlighter-rouge">fold()</code> to make it a bit neater. Maybe I’ll change it eventually.</p>
+
+<p>At the bottom, you can see a match statement for the integration method. <code class="language-plaintext highlighter-rouge">update_velocities_and_collide</code> calculates the accelerations, but it doesn’t apply them. I partially explained the difference between Euler integration and Verlet integration in my previous post.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">update_euler</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">f32</span><span class="p">){</span>
+    <span class="nn">microprofile</span><span class="p">::</span><span class="nd">scope!</span><span class="p">(</span><span class="s">"Update"</span><span class="p">,</span> <span class="s">"Bodies"</span><span class="p">);</span>
+
+    <span class="k">self</span><span class="py">.pos</span> <span class="o">+=</span> <span class="nn">Vector2</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="k">self</span><span class="py">.velocity.x</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">,</span> <span class="k">self</span><span class="py">.velocity.y</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">);</span>
+    <span class="k">self</span><span class="py">.velocity</span> <span class="o">+=</span> <span class="k">self</span><span class="py">.current_accel</span> <span class="o">*</span> <span class="n">step_size</span><span class="nf">.powi</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">pub</span> <span class="k">fn</span> <span class="nf">update_verlet</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">f32</span><span class="p">){</span> <span class="c">//verlet velocity</span>
+    <span class="nn">microprofile</span><span class="p">::</span><span class="nd">scope!</span><span class="p">(</span><span class="s">"Update"</span><span class="p">,</span> <span class="s">"Bodies"</span><span class="p">);</span>
+
+    <span class="k">self</span><span class="py">.velocity</span> <span class="o">+=</span> <span class="p">((</span><span class="k">self</span><span class="py">.current_accel</span> <span class="o">+</span> <span class="k">self</span><span class="py">.past_accel</span><span class="p">)</span><span class="err">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="o">*</span><span class="n">step_size</span><span class="p">;</span>
+    <span class="k">self</span><span class="py">.pos</span> <span class="o">+=</span> <span class="k">self</span><span class="py">.velocity</span> <span class="o">*</span> <span class="o">*</span><span class="n">step_size</span> <span class="o">+</span> <span class="p">(</span><span class="k">self</span><span class="py">.current_accel</span><span class="err">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">step_size</span><span class="p">)</span><span class="nf">.powi</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="k">self</span><span class="py">.past_accel</span> <span class="o">=</span> <span class="k">self</span><span class="py">.current_accel</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<hr />
+
+<p>Ggez also calls <code class="language-plaintext highlighter-rouge">draw()</code> every frame. <code class="language-plaintext highlighter-rouge">draw()</code> is the longest method but only because of all the conditionals. The important part is here:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">params</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawParam</span><span class="p">::</span><span class="nf">new</span><span class="p">()</span>
+                <span class="nf">.dest</span><span class="p">(</span><span class="k">self</span><span class="py">.offset</span><span class="p">)</span>
+                <span class="nf">.scale</span><span class="p">(</span><span class="nn">Vector2</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="k">self</span><span class="py">.zoom</span><span class="p">,</span> <span class="k">self</span><span class="py">.zoom</span><span class="p">));</span>
+
+
+            <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="k">self</span><span class="py">.bodies</span><span class="nf">.len</span><span class="p">(){</span> <span class="c">//draw bodies</span>
+                <span class="k">let</span> <span class="n">body</span> <span class="o">=</span> <span class="nn">graphics</span><span class="p">::</span><span class="nn">Mesh</span><span class="p">::</span><span class="nf">new_circle</span><span class="p">(</span> <span class="c">//draw body</span>
+                    <span class="n">ctx</span><span class="p">,</span>
+                    <span class="nn">graphics</span><span class="p">::</span><span class="nn">DrawMode</span><span class="p">::</span><span class="nf">fill</span><span class="p">(),</span>
+                    <span class="k">self</span><span class="py">.bodies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="py">.pos</span><span class="p">,</span>
+                    <span class="k">self</span><span class="py">.bodies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="py">.radius</span><span class="p">,</span>
+                    <span class="mf">2.0</span><span class="p">,</span>
+                    <span class="nn">graphics</span><span class="p">::</span><span class="nn">Color</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+                    <span class="nf">.expect</span><span class="p">(</span><span class="s">"error building body mesh"</span><span class="p">);</span>
+
+                <span class="nn">graphics</span><span class="p">::</span><span class="nf">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">body</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"error drawing body"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>First, I create the DrawParams that tell ggez how to draw the object. At first I was implementing camera movement by manually editing the position of each body in this method, but then I read the ggez documentation and that made it a lot easier.</p>
+
+<p>I also learned about error management in Rust from this method. Instead of catching and throwing errors, methods that  have the potential to error must return an <code class="language-plaintext highlighter-rouge">Option</code> that might be an <code class="language-plaintext highlighter-rouge">Err</code>. If I want to ignore an error, I can <code class="language-plaintext highlighter-rouge">match</code> (Rust switch statements) it to empty braces. If I want to close the program with an error message, I use <code class="language-plaintext highlighter-rouge">expect()</code>. If I want to tell Rust that I know that there’s definitely no error, I can use <code class="language-plaintext highlighter-rouge">unwrap()</code>. You can see a lot more error management with how I drew trails if you look at the code <a href="https://github.com/mkhan45/gravity-sim/blob/master/src/main.rs#L149">here</a>.</p>
+
+<hr />
+
+<p>The rest is just processing input. Ggez gives methods like <code class="language-plaintext highlighter-rouge">key_down_event</code> and <code class="language-plaintext highlighter-rouge">mouse_motion_event</code>, and the rest is pretty simple. I might change how camera movement works because while <code class="language-plaintext highlighter-rouge">key_down_event</code> is automatically debounced, there’s also <code class="language-plaintext highlighter-rouge">ggez::input::keyboard::pressed_keys()</code> which returns a set of all the keys pressed during a frame, which I can use to make the movement smoother. I’d also like to add a GUI but there aren’t many good options for Rust GUIs yet, so I think I’ll implement a simple one myself.</p>
+
+  </div><a class="u-url" href="/2019/05/21/gravity-sim-code.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Mikail Khan</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Mikail Khan</li><li><a class="u-email" href="mailto:mikail.khan45@gmail.com">mikail.khan45@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mkhan45"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mkhan45</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>¯\_(ツ)_/¯</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
