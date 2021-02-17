@@ -22,7 +22,7 @@ title: Cool Code Snippetse
 email: mikail@mikail-khan.com
 description: >- # this means to ignore newlines until "baseurl:"
    Cool Code Snippets Explained
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/cool_code_snippets" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: mkhan45
 
