@@ -6,7 +6,7 @@ fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
 
 This Haskell oneliner makes an infinite, lazily calculated list of all the fibonacci numbers. Since it's infinite and lazily calculated, printing it just prints the fibonacci sequence as fast as the computer can calculate them, and it makes a pretty interesting pattern of continually growing arcs from left to right.
 
-![](/resources/fibonacci_arc.png)
+![](https://mkhan45.github.io/cool_code_snippets/resources/fibonacci_arc.png)
 
 Working with the list is pretty convenient:
 
