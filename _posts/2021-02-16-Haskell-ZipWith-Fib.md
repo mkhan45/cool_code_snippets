@@ -38,7 +38,7 @@ In Haskell, `:` prepends to a list. More accurately, it returns a new list with 
 > ls = 1 : 2 : 3 -- type error since 3 is not a list
 ```
 
-That takes care of the first part. `1 : 1 : (...)` means that the list will start with [1, 1]. This also means that `zipWith (+) fibs (tail fibs)`
+That takes care of the first part. `1 : 1 : (...)` means that the list will start with [1, 1]. This also means that `zipWith (+) fibs (tail fibs)` is a list.
 
 ### `zipWith`
 
