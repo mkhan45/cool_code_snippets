@@ -6,7 +6,7 @@ fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
 
 This Haskell oneliner makes an infinite, lazily calculated list of all the fibonacci numbers. Since it's infinite and lazily calculated, printing it just prints the fibonacci sequence as fast as the computer can calculate them, and it makes a pretty interesting pattern of continually growing arcs from left to right.
 
-#[/resources/fibonacci_arc.png]
+![](/resources/fibonacci_arc.png)
 
 Working with the list is pretty convenient:
 
@@ -38,7 +38,7 @@ In Haskell, `:` prepends to a list. More accurately, it returns a new list with 
 > ls = 1 : 2 : 3 -- type error since 3 is not a list
 ```
 
-That takes care of the first part. `1 : 1 : (...)` means that the list will start with [1, 1]. This also means that `zipWith (+) fibs (tail fibs)`
+That takes care of the first part. `1 : 1 : (...)` means that the list will start with [1, 1]. This also means that `zipWith (+) fibs (tail fibs)` is a list.
 
 ### `zipWith`
 
