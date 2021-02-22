@@ -1,11 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/cool_code_snippets/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/cool_code_snippets/" rel="alternate" type="text/html" /><updated>2021-02-16T19:42:45-05:00</updated><id>http://localhost:4000/cool_code_snippets/feed.xml</id><title type="html">Cool Code Snippets</title><subtitle>Cool Code Snippets Explained</subtitle><entry><title type="html">Haskell Zipwith Fib</title><link href="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html" rel="alternate" type="text/html" title="Haskell Zipwith Fib" /><published>2021-02-16T00:00:00-05:00</published><updated>2021-02-16T00:00:00-05:00</updated><id>http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib</id><content type="html" xml:base="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html">&lt;p&gt;For the first post I’ll write about one of my favorite pieces of code:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/cool_code_snippets/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/cool_code_snippets/" rel="alternate" type="text/html" /><updated>2021-02-22T00:36:04-05:00</updated><id>http://localhost:4000/cool_code_snippets/feed.xml</id><title type="html">Cool Code Snippets</title><subtitle>Cool Code Snippets Explained</subtitle><entry><title type="html">Java Hello World</title><link href="http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World.html" rel="alternate" type="text/html" title="Java Hello World" /><published>2021-02-22T00:00:00-05:00</published><updated>2021-02-22T00:00:00-05:00</updated><id>http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World</id><content type="html" xml:base="http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World.html">&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I’m sure everyone’s seen Hello World in Java. In fact, I’d expect that a significant number of developers write it as their first program. It’s always been funny to me how much about Java you have to know just to fully understand this program.&lt;/p&gt;
+
+&lt;p&gt;I’ll go over it line by line:&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;public-class-helloworld&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public class HelloWorld&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;This line declares the public class &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloWorld&lt;/code&gt;. Hopefully the file is called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloWorld.java&lt;/code&gt;, or else it won’t compile.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;public-static-void-mainstring-args&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public static void main(String[] args)&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;This declares the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public static void main&lt;/code&gt; function with argument of type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String[]&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;args&lt;/code&gt;, and in my experience it’s generally something CS novices copy paste around for the first few programs. There’s quite a few important keywords.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;: the method can be accessed from other files. I’m not completely sure why &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main()&lt;/code&gt; needs to be public, but there’s probably a good reason.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt;: the method is part of the class as a whole, not an individual instance of the class.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;: the method doesn’t return anything&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt;: the magic method name which makes it the entry point of the program&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String[] args&lt;/code&gt;: the argument is an array of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;s called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;args&lt;/code&gt;. The args come from the command line.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;systemoutprintlnhello-world&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.out.println(&quot;Hello World&quot;)&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;This line prints “Hello World” to the terminal. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System&lt;/code&gt; is a global Java class, essentially a namespace which exists to provide static methods and fields, one of which is stdout, called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;out&lt;/code&gt;. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;out&lt;/code&gt; is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PrintStream&lt;/code&gt; which has an instance method &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;println()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;To execute this code snippet, at least until fairly recently, you had to run:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;javac HelloWorld.java
+java HelloWorld
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javac&lt;/code&gt; produces a class file which can be run by the JVM using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java&lt;/code&gt; command. When I saw this, the first question I asked was how I could create a proper executable file. My teacher didn’t know but he didn’t know much. I didn’t learn about the JVM or bytecode or how it’s different from assembly for at least a few months.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;To summarize, you need to understand these Java concepts to understand &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloWorld.java&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Classes&lt;/li&gt;
+  &lt;li&gt;Methods&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String[]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Namespaces (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PrintStream&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Instance methods&lt;/li&gt;
+  &lt;li&gt;Class files / bytecode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Of course that’s a bit exaggerated, but there’s definitely a lot of magic for someone writing their first few lines of code. I don’t think Java’s terrible for teaching CS, but I wish there wasn’t so much that has to be handwaved away.&lt;/p&gt;</content><author><name></name></author><summary type="html">class HelloWorld { public static void main(String[] args) { System.out.println(&quot;Hello World&quot;); } }</summary></entry><entry><title type="html">Haskell Zipwith Fib</title><link href="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html" rel="alternate" type="text/html" title="Haskell Zipwith Fib" /><published>2021-02-16T00:00:00-05:00</published><updated>2021-02-16T00:00:00-05:00</updated><id>http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib</id><content type="html" xml:base="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html">&lt;p&gt;For the first post I’ll write about one of my favorite pieces of code:&lt;/p&gt;
 
 &lt;div class=&quot;language-hs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zipWith&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This Haskell oneliner makes an infinite, lazily calculated list of all the fibonacci numbers. Since it’s infinite and lazily calculated, printing it just prints the fibonacci sequence as fast as the computer can calculate them, and it makes a pretty interesting pattern of continually growing arcs from left to right.&lt;/p&gt;
 
-&lt;p&gt;#[/resources/fibonacci_arc.png]&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/resources/fibonacci_arc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Working with the list is pretty convenient:&lt;/p&gt;
 
@@ -35,7 +99,7 @@
 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- type error since 3 is not a list&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;That takes care of the first part. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1 : 1 : (...)&lt;/code&gt; means that the list will start with [1, 1]. This also means that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zipWith (+) fibs (tail fibs)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;That takes care of the first part. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1 : 1 : (...)&lt;/code&gt; means that the list will start with [1, 1]. This also means that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zipWith (+) fibs (tail fibs)&lt;/code&gt; is a list.&lt;/p&gt;
 
 &lt;h3 id=&quot;zipwith&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zipWith&lt;/code&gt;&lt;/h3&gt;
 

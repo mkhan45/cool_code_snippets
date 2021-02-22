@@ -52,7 +52,7 @@
 
 <p>This Haskell oneliner makes an infinite, lazily calculated list of all the fibonacci numbers. Since it’s infinite and lazily calculated, printing it just prints the fibonacci sequence as fast as the computer can calculate them, and it makes a pretty interesting pattern of continually growing arcs from left to right.</p>
 
-<p>#[/resources/fibonacci_arc.png]</p>
+<p><img src="/resources/fibonacci_arc.png" alt="" /></p>
 
 <p>Working with the list is pretty convenient:</p>
 
@@ -82,7 +82,7 @@
 <span class="o">&gt;</span> <span class="n">ls</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">2</span> <span class="o">:</span> <span class="mi">3</span> <span class="c1">-- type error since 3 is not a list</span>
 </code></pre></div></div>
 
-<p>That takes care of the first part. <code class="language-plaintext highlighter-rouge">1 : 1 : (...)</code> means that the list will start with [1, 1]. This also means that <code class="language-plaintext highlighter-rouge">zipWith (+) fibs (tail fibs)</code></p>
+<p>That takes care of the first part. <code class="language-plaintext highlighter-rouge">1 : 1 : (...)</code> means that the list will start with [1, 1]. This also means that <code class="language-plaintext highlighter-rouge">zipWith (+) fibs (tail fibs)</code> is a list.</p>
 
 <h3 id="zipwith"><code class="language-plaintext highlighter-rouge">zipWith</code></h3>
 
