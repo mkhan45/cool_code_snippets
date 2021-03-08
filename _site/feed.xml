@@ -1,4 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/cool_code_snippets/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/cool_code_snippets/" rel="alternate" type="text/html" /><updated>2021-02-22T00:36:04-05:00</updated><id>http://localhost:4000/cool_code_snippets/feed.xml</id><title type="html">Cool Code Snippets</title><subtitle>Cool Code Snippets Explained</subtitle><entry><title type="html">Java Hello World</title><link href="http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World.html" rel="alternate" type="text/html" title="Java Hello World" /><published>2021-02-22T00:00:00-05:00</published><updated>2021-02-22T00:00:00-05:00</updated><id>http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World</id><content type="html" xml:base="http://localhost:4000/cool_code_snippets/2021/02/22/Java-Hello-World.html">&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://mkhan45.github.io/cool_code_snippets/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mkhan45.github.io/cool_code_snippets/" rel="alternate" type="text/html" /><updated>2021-03-08T10:30:32-05:00</updated><id>https://mkhan45.github.io/cool_code_snippets/feed.xml</id><title type="html">Cool Code Snippets</title><subtitle>Cool Code Snippets Explained</subtitle><entry><title type="html">Repl</title><link href="https://mkhan45.github.io/cool_code_snippets/2021/03/08/REPL.html" rel="alternate" type="text/html" title="Repl" /><published>2021-03-08T00:00:00-05:00</published><updated>2021-03-08T00:00:00-05:00</updated><id>https://mkhan45.github.io/cool_code_snippets/2021/03/08/REPL</id><content type="html" xml:base="https://mkhan45.github.io/cool_code_snippets/2021/03/08/REPL.html">&lt;p&gt;This one is really simple. Most people are familiar with REPLs for Python, JavaScript, or even repl.it but the term comes from Lisp.&lt;/p&gt;
+
+&lt;p&gt;REPL stands for Read-Eval-Print-Loop, and here’s how you make one in Common Lisp:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-clisp&quot;&gt;(loop(print(eval(read))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It’s pretty easy to tell what it does; it just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read&lt;/code&gt;s from stdin, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eval&lt;/code&gt;s the input, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;print&lt;/code&gt;s the evaluation, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loop&lt;/code&gt;s infinitely. It’s a pretty ugly REPL though since it doesn’t add a newline after the output:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~ Δ clisp repl.cl
+(+ 3 5)
+
+8 (* (+ 3 5) 12)
+
+96
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It can be made a lot nicer with a little work:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-clisp&quot;&gt;(defun println (s)
+  (format T &quot;~s~%&quot; s))
+
+(defun readprompt (p)
+  (format T p)
+  (read))
+
+(loop(println(eval(readprompt &quot;&amp;gt; &quot;))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~ Δ clisp repl.cl
+&amp;gt; (+ 5 3)
+8
+&amp;gt; (* 3 (+ 42 (* 3 2)))
+144
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;For reference, here’s a simple REPL in Python:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~ Δ python repl.py
+5 + 5 * 3
+20
+[x**2 for x in range(10)]
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And to make it print a prompt it’s pretty simple:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;gt; &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~ Δ python repl.py
+&amp;gt; 5 + 3 * 2
+11
+&amp;gt; [x**3 for x in range(15) if x % 2 == 0]
+[0, 8, 64, 216, 512, 1000, 1728, 2744]
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">This one is really simple. Most people are familiar with REPLs for Python, JavaScript, or even repl.it but the term comes from Lisp.</summary></entry><entry><title type="html">Java Hello World</title><link href="https://mkhan45.github.io/cool_code_snippets/2021/02/22/Java-Hello-World.html" rel="alternate" type="text/html" title="Java Hello World" /><published>2021-02-22T00:00:00-05:00</published><updated>2021-02-22T00:00:00-05:00</updated><id>https://mkhan45.github.io/cool_code_snippets/2021/02/22/Java-Hello-World</id><content type="html" xml:base="https://mkhan45.github.io/cool_code_snippets/2021/02/22/Java-Hello-World.html">&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
@@ -62,14 +126,14 @@ java HelloWorld
   &lt;li&gt;Class files / bytecode&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Of course that’s a bit exaggerated, but there’s definitely a lot of magic for someone writing their first few lines of code. I don’t think Java’s terrible for teaching CS, but I wish there wasn’t so much that has to be handwaved away.&lt;/p&gt;</content><author><name></name></author><summary type="html">class HelloWorld { public static void main(String[] args) { System.out.println(&quot;Hello World&quot;); } }</summary></entry><entry><title type="html">Haskell Zipwith Fib</title><link href="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html" rel="alternate" type="text/html" title="Haskell Zipwith Fib" /><published>2021-02-16T00:00:00-05:00</published><updated>2021-02-16T00:00:00-05:00</updated><id>http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib</id><content type="html" xml:base="http://localhost:4000/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html">&lt;p&gt;For the first post I’ll write about one of my favorite pieces of code:&lt;/p&gt;
+&lt;p&gt;Of course that’s a bit exaggerated, but there’s definitely a lot of magic for someone writing their first few lines of code. I don’t think Java’s terrible for teaching CS, but I wish there wasn’t so much that has to be handwaved away.&lt;/p&gt;</content><author><name></name></author><summary type="html">class HelloWorld { public static void main(String[] args) { System.out.println(&quot;Hello World&quot;); } }</summary></entry><entry><title type="html">Haskell Zipwith Fib</title><link href="https://mkhan45.github.io/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html" rel="alternate" type="text/html" title="Haskell Zipwith Fib" /><published>2021-02-16T00:00:00-05:00</published><updated>2021-02-16T00:00:00-05:00</updated><id>https://mkhan45.github.io/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib</id><content type="html" xml:base="https://mkhan45.github.io/cool_code_snippets/2021/02/16/Haskell-ZipWith-Fib.html">&lt;p&gt;For the first post I’ll write about one of my favorite pieces of code:&lt;/p&gt;
 
 &lt;div class=&quot;language-hs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zipWith&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This Haskell oneliner makes an infinite, lazily calculated list of all the fibonacci numbers. Since it’s infinite and lazily calculated, printing it just prints the fibonacci sequence as fast as the computer can calculate them, and it makes a pretty interesting pattern of continually growing arcs from left to right.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/resources/fibonacci_arc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://mkhan45.github.io/cool_code_snippets/resources/fibonacci_arc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Working with the list is pretty convenient:&lt;/p&gt;
 
